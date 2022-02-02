@@ -23,8 +23,13 @@ async function generate() {
     //Get Pokemon Details
     const data = await fetchJSON(`${url}/${rand_index}`)
 
-    //Set name after Capitilization
+    //Set Pokemon Name after Capitilization
     document.getElementById('name').innerHTML = capitalizeFirstLetter(data.name);
+        
+    //Update Pokemon Image
+    let image = document.getElementById('pokemon-image');
+    image.src = data.sprites.other.dream_world.front_default;
+
     //Implement Pokemon Type Information
     const typeContainer = document.getElementById('type-container');
     //Clear Child Elements under `type-container`
@@ -45,7 +50,7 @@ async function generate() {
 
     });
 
-    //Fighting Stats
+    //Set Pokemon Fighting Stats
     document.getElementById('hp').innerHTML = data.stats[0].base_stat;
     document.getElementById('attack').innerHTML = data.stats[1].base_stat;
     document.getElementById('defense').innerHTML = data.stats[2].base_stat;
