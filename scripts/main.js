@@ -1,6 +1,6 @@
-document.getElementById('generate').addEventListener("click", generate);
-
 const url = 'https://pokeapi.co/api/v2/pokemon';
+
+document.getElementById('generate').addEventListener("click", generate);
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -23,14 +23,27 @@ async function generate() {
     //Get Pokemon Details
     const data = await fetchJSON(`${url}/${rand_index}`)
 
-    console.log(data);
+    //Set name after Capitilization
     document.getElementById('name').innerHTML = capitalizeFirstLetter(data.name);
     //Implement Pokemon Type Information
-    let typeContainer = document.getElementById('type-container');
+    const typeContainer = document.getElementById('type-container');
+    //Clear Child Elements under `type-container`
+    while(typeContainer.firstChild) {
+        typeContainer.firstChild.remove();
+    }
+
+    //Append Child Elements under `type-container`
     data.types.forEach(type => {
+        //Create Div with Class
+        let badge = document.createElement('div');
+        badge.classList.add('type-badge');
+        //Create Text Node
+        let text = document.createTextNode(type.type.name);
+        //Append Text Node to Badge
+        badge.appendChild(text);
+        typeContainer.appendChild(badge);
 
     });
-    console.log(typeContainer);
 
     //Fighting Stats
     document.getElementById('hp').innerHTML = data.stats[0].base_stat;
