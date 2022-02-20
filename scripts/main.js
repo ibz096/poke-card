@@ -4,28 +4,46 @@ document.getElementById('generate').addEventListener("click", generate);
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+}
 
 async function fetchJSON(url) {
     const response = await fetch(url)
+    if (!response.ok) {
+        const message = `An error has occured: ${response.status}`;
+        throw new Error(message);
+    }
     const data = await response.json()
     return data
 }
 
 async function generate() {
     //Get Total Number of pokemon from PokeAPI
-    const { count: pokeCount } = await fetchJSON(url)    
+    const { count: pokeCount } = await fetchJSON(url)
 
     //Get Random Pokemon within the pokeCount limit
     let rand_index = Math.floor(Math.random() * pokeCount) + 1;
     console.log(`Random Index: ${rand_index}`);
 
     //Get Pokemon Details
-    const data = await fetchJSON(`${url}/${rand_index}`)
+    const data = await fetchJSON(`${url}/${rand_index}`).catch(error => {
+        console.log(error.message);
+        return {
+            name: "missingNo",
+            sprites: {
+                other: {
+                    dream_world: {
+                        front_default: "https://archives.bulbagarden.net/media/upload/9/98/Missingno_RB.png"
+                    }
+                }
+            },
+            types: [{ type: { name: "???" } }],
+            stats: [{ base_stat: "???" }, { base_stat: "???" }, { base_stat: "???" }, undefined, undefined, { base_stat: "???" }]
+        }
+    });
 
     //Set Pokemon Name after Capitilization
     document.getElementById('name').innerHTML = capitalizeFirstLetter(data.name);
-        
+
     //Update Pokemon Image
     let image = document.getElementById('pokemon-image');
     image.src = data.sprites.other.dream_world.front_default;
@@ -33,7 +51,7 @@ async function generate() {
     //Implement Pokemon Type Information
     const typeContainer = document.getElementById('type-container');
     //Clear Child Elements under `type-container`
-    while(typeContainer.firstChild) {
+    while (typeContainer.firstChild) {
         typeContainer.firstChild.remove();
     }
 
@@ -55,4 +73,5 @@ async function generate() {
     document.getElementById('attack').innerHTML = data.stats[1].base_stat;
     document.getElementById('defense').innerHTML = data.stats[2].base_stat;
     document.getElementById('speed').innerHTML = data.stats[5].base_stat;
+
 }
