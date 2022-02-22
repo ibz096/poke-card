@@ -50,8 +50,8 @@ html, body {
 }
 
 img {
-    height: 50%;
-    width: 50%;
+    max-width: 150px;
+    max-height: 150px;
     display: block;
 }
 
