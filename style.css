@@ -19,7 +19,7 @@ html, body {
     border-style: solid;
     border-radius: 10px;
     display: grid;
-    justify-items: center;
+    /* justify-items: center; */
     overflow: hidden;
 }
 
