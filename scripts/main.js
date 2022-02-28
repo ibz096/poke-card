@@ -81,6 +81,7 @@ async function generate() {
         //Create Div with Class
         let badge = document.createElement('div');
         badge.classList.add('type-badge');
+        badge.style.backgroundColor = type_map[type.type.name];
         //Create Text Node
         let text = document.createTextNode(type.type.name);
         //Append Text Node to Badge
