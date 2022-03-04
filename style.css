@@ -47,6 +47,7 @@ html, body {
 .pokemon-image-container {
     display: flex;
     justify-content: center;
+    height: 150px;
 }
 
 img {
